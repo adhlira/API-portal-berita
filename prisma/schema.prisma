@@ -1,0 +1,91 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Roles {
+  id             Int              @id @default(autoincrement())
+  name           String
+  Users          Users[]
+  PermissionRole PermissionRole[]
+
+  @@map("roles")
+}
+
+model Users {
+  id       Int    @id @default(autoincrement())
+  role_id  Int
+  name     String
+  email    String @unique
+  password String
+
+  Role   Roles    @relation(fields: [role_id], references: [id])
+  News   News[]
+  Tokens Tokens[]
+
+  @@map("users")
+}
+
+model Categories {
+  id   Int    @id @default(autoincrement())
+  name String
+  News News[]
+
+  @@map("categories")
+}
+
+model News {
+  id          Int      @id @default(autoincrement())
+  category_id Int
+  users_id    Int
+  title       String
+  body        String
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  Category Categories @relation(fields: [category_id], references: [id])
+  Users    Users      @relation(fields: [users_id], references: [id])
+
+  @@map("news")
+}
+
+model Tokens {
+  id         Int      @id @default(autoincrement())
+  user_id    Int
+  token      String   @unique
+  expired_at DateTime
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  Users Users @relation(fields: [user_id], references: [id])
+
+  @@map("tokens")
+}
+
+model Permissions {
+  id             Int              @id @default(autoincrement())
+  name           String
+  PermissionRole PermissionRole[]
+
+  @@map("permissions")
+}
+
+model PermissionRole {
+  permission_id Int
+  role_id       Int
+
+  Permissions Permissions @relation(fields: [permission_id], references: [id])
+  Roles       Roles       @relation(fields: [role_id], references: [id])
+
+  @@id([permission_id, role_id])
+}
