@@ -2,7 +2,6 @@ import { PrismaClient } from "@prisma/client";
 import { Router } from "express";
 import { Permission } from "../authorization.js";
 import { authToken, authorizePermission } from "../middleware.js";
-import { AxiosHeaders } from "axios";
 
 const prisma = new PrismaClient();
 const router = Router();
@@ -94,6 +93,24 @@ router.delete("/news/:id", authorizePermission(Permission.DELETE_NEWS), async (r
     }
   } catch (error) {
     return res.status(500).json({ message: error });
+  }
+});
+
+router.post("/news/search", authorizePermission(Permission.BROWSE_NEWS), async (req, res) => {
+  const { title } = req.body;
+  try {
+    const news = await prisma.news.findMany({
+      where: {
+        title: { contains: title },
+      },
+    });
+    if (news.length == 0) {
+      return res.status(404).json({ message: "Data not found" });
+    } else {
+      return res.status(200).json(news);
+    }
+  } catch (error) {
+    res.status(500).json({ message: error });
   }
 });
 
