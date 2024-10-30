@@ -14,7 +14,7 @@ Dalam pembuatan API ini menggunakan beberapa tech stack seperti :
 ## Documentation
 ### Route Login
 ### POST `/login`
-Endpoint untuk mengelola user yang akan login ke sistem
+Endpoint ini digunakan untuk mengelola user yang akan login
 ### Pengujian
 Jika user menginputkan email dan password yang sudah terdaftar seperti contoh dibawah, maka endpoint akan mengenerate sebuah token yang nantinya digunakan untuk membedakan user yang satu dengan lainnya. 
 - **Request Body**
@@ -110,6 +110,13 @@ Pada endpoint ini, membutuhkan token untuk authorization user. Token authorizati
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJpYXQiOjE3MzAyODEyOTAsImV4cCI6MTczMDMxMDA5MH0.Tfmky7nWGBnSKywJY3B_WugbnljqR5vwaKaY4YPFVd4
 ```
 
+- **Request Body**
+```json
+{
+    "name" : "Breaking News"
+}
+```
+
 - **Response**
 ```json
 {
@@ -117,6 +124,351 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJpYXQiOjE3MzAyODEyOTAsImV
    "new_category": {
        "id": 5,
        "name": "Breaking News"
+    }
+}
+```
+<br>
+Jika user menginputkan nama category yang sudah terdaftar dalam database, maka endpoint akan mengembalikkan pesan error
+
+<br>
+
+- **Request Headers**
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJpYXQiOjE3MzAyODEyOTAsImV4cCI6MTczMDMxMDA5MH0.Tfmky7nWGBnSKywJY3B_WugbnljqR5vwaKaY4YPFVd4
+```
+
+<br>
+
+- **Request Body**
+
+```json
+{
+    "name" : "Sports"
+}
+```
+
+<br>
+
+- **Response**
+```json
+{
+    "message" : "Category name is already exist"
+}
+```
+
+<br>
+
+<br>
+Jika user yang login mempunyai role visitor, maka endpoint akan mengembalikkan pesan error <br>
+<br>
+
+- **Request Header**
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo2LCJpYXQiOjE3MzAyODIxNDgsImV4cCI6MTczMDMxMDk0OH0.dd0V6_oHN7glqgNSDQ4YNTJVa11pEdNiKyDvXOTVldo
+```
+
+- **Response**
+```json
+{
+    "message": "Forbidden"
+}
+```
+<br>
+
+### GET `/categories/2`
+Endpoint ini digunakan untuk mengakses data categories berdasarkan id category tertentu
+### Pengujian
+Pada endpoint ini, membutuhkan token untuk authorization user. Token authorization diletakkan di bagian headers dengan key Authorization. Jika user yang login mempunyai role Admin, maka user tersebut dapat mengakses endpoint ini.
+<br>
+
+- **Request Headers**
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJpYXQiOjE3MzAyODEyOTAsImV4cCI6MTczMDMxMDA5MH0.Tfmky7nWGBnSKywJY3B_WugbnljqR5vwaKaY4YPFVd4
+```
+
+- **Response**
+```json
+{
+  "message": "Data Category",
+  "category": {
+     "id": 2,
+     "name": "Sports"
+  }
+}
+```
+<br>
+Jika user yang login mempunyai role visitor, maka endpoint akan mengembalikkan pesan error <br>
+<br>
+
+- **Request Header**
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo2LCJpYXQiOjE3MzAyODIxNDgsImV4cCI6MTczMDMxMDk0OH0.dd0V6_oHN7glqgNSDQ4YNTJVa11pEdNiKyDvXOTVldo
+```
+
+- **Response**
+```json
+{
+    "message": "Forbidden"
+}
+```
+<br>
+
+### PUT `/categories/5`
+Endpoint ini digunakan untuk melakukan update pada data categories berdasarkan id category tertentu
+### Pengujian
+Pada endpoint ini, membutuhkan token untuk authorization user. Token authorization diletakkan di bagian headers dengan key Authorization. Jika user yang login mempunyai role Admin, maka user tersebut dapat mengakses endpoint ini.
+<br>
+
+- **Request Headers**
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJpYXQiOjE3MzAyODEyOTAsImV4cCI6MTczMDMxMDA5MH0.Tfmky7nWGBnSKywJY3B_WugbnljqR5vwaKaY4YPFVd4
+```
+
+- **Request Body**
+```json
+{
+    "name":"Breaking news updated"
+}
+```
+
+- **Response**
+```json
+{
+  "message": "Data Updated Successfully",
+  "category_updated": {
+      "id": 5,
+      "name" : "Breaking news updated"
+  }
+}
+```
+<br>
+Jika user yang login mempunyai role visitor, maka endpoint akan mengembalikkan pesan error <br>
+<br>
+
+- **Request Header**
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo2LCJpYXQiOjE3MzAyODIxNDgsImV4cCI6MTczMDMxMDk0OH0.dd0V6_oHN7glqgNSDQ4YNTJVa11pEdNiKyDvXOTVldo
+```
+
+- **Response**
+```json
+{
+    "message": "Forbidden"
+}
+```
+<br>
+
+### DELETE `/categories/5`
+Endpoint ini digunakan untuk menghapus data categories berdasarkan id category tertentu
+### Pengujian
+Pada endpoint ini, membutuhkan token untuk authorization user. Token authorization diletakkan di bagian headers dengan key Authorization. Jika user yang login mempunyai role Admin, maka user tersebut dapat mengakses endpoint ini.
+<br>
+
+- **Request Headers**
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJpYXQiOjE3MzAyODEyOTAsImV4cCI6MTczMDMxMDA5MH0.Tfmky7nWGBnSKywJY3B_WugbnljqR5vwaKaY4YPFVd4
+```
+
+- **Response**
+```json
+{
+    "message": "Data Category has been deleted"
+}
+```
+<br>
+Jika user yang login mempunyai role visitor, maka endpoint akan mengembalikkan pesan error <br>
+<br>
+
+- **Request Header**
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo2LCJpYXQiOjE3MzAyODIxNDgsImV4cCI6MTczMDMxMDk0OH0.dd0V6_oHN7glqgNSDQ4YNTJVa11pEdNiKyDvXOTVldo
+```
+
+- **Response**
+```json
+{
+    "message": "Forbidden"
+}
+```
+<br>
+
+### Route News
+### GET `/news`
+Endpoint ini digunakan untuk mengakses semua data news
+### Pengujian
+Pada endpoint ini, membutuhkan token untuk authorization user. Token authorization diletakkan di bagian headers dengan key Authorization. Pada endpoint ini, user yang login mempunyai role Admin maupun role Visitor, dapat mengakses endpoint ini.
+<br>
+
+- **Request Headers role Admin**
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJpYXQiOjE3MzAyODEyOTAsImV4cCI6MTczMDMxMDA5MH0.Tfmky7nWGBnSKywJY3B_WugbnljqR5vwaKaY4YPFVd4
+```
+
+- **Response**
+```json
+{
+  "message": "Data News",
+  "news": [
+      {
+          "id": 1,
+          "category_id": 1,
+          "users_id": 5,
+          "title": "Judul berita 1",
+          "body": "Isi berita 1",
+          "created_at": "2024-10-29T06:38:40.262Z",
+          "updated_at": "2024-10-29T06:38:40.262Z"
+      },
+      {
+          "id": 2,
+          "category_id": 1,
+          "users_id": 5,
+          "title": "Judul berita 2",
+          "body": "Isi berita 2",
+          "created_at": "2024-10-29T07:08:42.315Z",
+          "updated_at": "2024-10-29T07:20:53.911Z"
+      },
+      {
+          "id": 4,
+          "category_id": 2,
+          "users_id": 5,
+          "title": "Cara meningkatkan berat badan",
+          "body": "Isi berita 4",
+          "created_at": "2024-10-29T09:47:36.293Z",
+          "updated_at": "2024-10-29T09:47:36.293Z"
+      }
+  ]
+}
+```
+<br>
+Jika user yang login mempunyai role visitor <br>
+<br>
+
+- **Request Header Role Visitor**
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo2LCJpYXQiOjE3MzAyODIxNDgsImV4cCI6MTczMDMxMDk0OH0.dd0V6_oHN7glqgNSDQ4YNTJVa11pEdNiKyDvXOTVldo
+```
+
+- **Response**
+```json
+{
+  "message": "Data News",
+  "news": [
+      {
+          "id": 1,
+          "category_id": 1,
+          "users_id": 5,
+          "title": "Judul berita 1",
+          "body": "Isi berita 1",
+          "created_at": "2024-10-29T06:38:40.262Z",
+          "updated_at": "2024-10-29T06:38:40.262Z"
+      },
+      {
+          "id": 2,
+          "category_id": 1,
+          "users_id": 5,
+          "title": "Judul berita 2",
+          "body": "Isi berita 2",
+          "created_at": "2024-10-29T07:08:42.315Z",
+          "updated_at": "2024-10-29T07:20:53.911Z"
+      },
+      {
+          "id": 4,
+          "category_id": 2,
+          "users_id": 5,
+          "title": "Cara meningkatkan berat badan",
+          "body": "Isi berita 4",
+          "created_at": "2024-10-29T09:47:36.293Z",
+          "updated_at": "2024-10-29T09:47:36.293Z"
+      }
+  ]
+}
+```
+<br>
+
+### GET `/news/1`
+Endpoint ini digunakan untuk mengakses data news berdasarkan id news tertentu
+### Pengujian
+Pada endpoint ini, membutuhkan token untuk authorization user. Token authorization diletakkan di bagian headers dengan key Authorization. Pada endpoint ini, user yang login mempunyai role Admin maupun role Visitor dapat mengakses endpoint ini.
+<br>
+
+- **Request Headers role Admin**
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJpYXQiOjE3MzAyODEyOTAsImV4cCI6MTczMDMxMDA5MH0.Tfmky7nWGBnSKywJY3B_WugbnljqR5vwaKaY4YPFVd4
+```
+
+- **Response**
+```json
+{
+    "message": "Data news",
+    "news": {
+        "id": 1,
+        "category_id": 1,
+        "users_id": 5,
+        "title": "Judul berita 1",
+        "body": "Isi berita 1",
+        "created_at": "2024-10-29T06:38:40.262Z",
+        "updated_at": "2024-10-29T06:38:40.262Z"
+    }
+}
+```
+<br>
+Jika user yang login mempunyai role visitor <br>
+<br>
+
+- **Request Header Role Visitor**
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo2LCJpYXQiOjE3MzAyODIxNDgsImV4cCI6MTczMDMxMDk0OH0.dd0V6_oHN7glqgNSDQ4YNTJVa11pEdNiKyDvXOTVldo
+```
+
+- **Response**
+```json
+{
+    "message": "Data news",
+    "news": {
+        "id": 1,
+        "category_id": 1,
+        "users_id": 5,
+        "title": "Judul berita 1",
+        "body": "Isi berita 1",
+        "created_at": "2024-10-29T06:38:40.262Z",
+        "updated_at": "2024-10-29T06:38:40.262Z"
+    }
+}
+```
+<br>
+
+### POST `/news`
+Endpoint ini digunakan untuk menambah data news
+### Pengujian
+Pada endpoint ini, membutuhkan token untuk authorization user. Token authorization diletakkan di bagian headers dengan key Authorization. Jika user yang login mempunyai role Admin, maka user tersebut dapat mengakses endpoint ini.
+<br>
+
+- **Request Headers**
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJpYXQiOjE3MzAyODEyOTAsImV4cCI6MTczMDMxMDA5MH0.Tfmky7nWGBnSKywJY3B_WugbnljqR5vwaKaY4YPFVd4
+```
+
+- **Request Body**
+```json
+{
+    "category_id": 4,
+    "title" : "Judul berita 5",
+    "body" : "Isi berita 5"
+}
+```
+
+- **Response**
+```json
+{
+    "message": "Data created successfully",
+    "news": {
+        "id": 5,
+        "category_id": 4,
+        "users_id": 5,
+        "title": "Judul berita 5",
+        "body": "Isi berita 5",
+        "created_at": "2024-10-30T05:44:17.009Z",
+        "updated_at": "2024-10-30T05:44:17.009Z"
     }
 }
 ```
@@ -133,6 +485,225 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo2LCJpYXQiOjE3MzAyODIxNDgsImV
 ```json
 {
     "message": "Forbidden"
+}
+```
+<br>
+
+### PUT `/news/2`
+Endpoint ini digunakan untuk melakukan update pada data news berdasarkan id news tertentu
+### Pengujian
+Pada endpoint ini, membutuhkan token untuk authorization user. Token authorization diletakkan di bagian headers dengan key Authorization. Jika user yang login mempunyai role Admin, maka user tersebut dapat mengakses endpoint ini.
+<br>
+
+- **Request Headers**
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJpYXQiOjE3MzAyODEyOTAsImV4cCI6MTczMDMxMDA5MH0.Tfmky7nWGBnSKywJY3B_WugbnljqR5vwaKaY4YPFVd4
+```
+
+- **Request Body**
+```json
+{
+    "title" : "Judul berita 2 updated",
+    "body" : "Isi berita 2 updated"
+}
+```
+
+- **Response**
+```json
+{
+    "message": "Data updated successfully",
+    "news_updated": {
+        "id": 2,
+        "category_id": 1,
+        "users_id": 5,
+        "title": "Judul berita 2 updated",
+        "body": "Isi berita 2 updated",
+        "created_at": "2024-10-29T07:08:42.315Z",
+        "updated_at": "2024-10-30T05:49:58.390Z"
+    }
+}
+```
+<br>
+Jika user yang login mempunyai role visitor, maka endpoint akan mengembalikkan pesan error <br>
+<br>
+
+- **Request Header**
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo2LCJpYXQiOjE3MzAyODIxNDgsImV4cCI6MTczMDMxMDk0OH0.dd0V6_oHN7glqgNSDQ4YNTJVa11pEdNiKyDvXOTVldo
+```
+
+- **Response**
+```json
+{
+    "message": "Forbidden"
+}
+```
+<br>
+
+### POST `/news/search`
+Endpoint ini digunakan untuk melakukan pencarian pada data news berdasarkan title
+### Pengujian
+Pada endpoint ini, membutuhkan token untuk authorization user. Token authorization diletakkan di bagian headers dengan key Authorization. User yang mempunyai role Admin maupun role Visitor, dapat mengakses endpoint ini.
+<br>
+
+- **Request Headers role Admin**
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJpYXQiOjE3MzAyODEyOTAsImV4cCI6MTczMDMxMDA5MH0.Tfmky7nWGBnSKywJY3B_WugbnljqR5vwaKaY4YPFVd4
+```
+
+- **Request Body**
+```json
+{
+    "title" : "berita",
+}
+```
+
+- **Response**
+```json
+[
+    {
+        "id": 1,
+        "category_id": 1,
+        "users_id": 5,
+        "title": "Judul berita 1",
+        "body": "Isi berita 1",
+        "created_at": "2024-10-29T06:38:40.262Z",
+        "updated_at": "2024-10-29T06:38:40.262Z"
+    },
+    {
+        "id": 2,
+        "category_id": 1,
+        "users_id": 5,
+        "title": "Judul berita 2 updated",
+        "body": "Isi berita 2 updated",
+        "created_at": "2024-10-29T07:08:42.315Z",
+        "updated_at": "2024-10-30T05:53:58.366Z"
+    },
+    {
+        "id": 5,
+        "category_id": 4,
+        "users_id": 5,
+        "title": "Judul berita 5",
+        "body": "Isi berita 5",
+        "created_at": "2024-10-30T05:44:17.009Z",
+        "updated_at": "2024-10-30T05:44:17.009Z"
+    }
+]
+```
+<br>
+Jika user yang login mempunyai role visitor <br>
+<br>
+
+- **Request Header Role Visitor**
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo2LCJpYXQiOjE3MzAyODIxNDgsImV4cCI6MTczMDMxMDk0OH0.dd0V6_oHN7glqgNSDQ4YNTJVa11pEdNiKyDvXOTVldo
+```
+
+- **Request Body**
+```json
+{
+    "title" : "berita",
+}
+```
+
+- **Response**
+```json
+[
+    {
+        "id": 1,
+        "category_id": 1,
+        "users_id": 5,
+        "title": "Judul berita 1",
+        "body": "Isi berita 1",
+        "created_at": "2024-10-29T06:38:40.262Z",
+        "updated_at": "2024-10-29T06:38:40.262Z"
+    },
+    {
+        "id": 2,
+        "category_id": 1,
+        "users_id": 5,
+        "title": "Judul berita 2 updated",
+        "body": "Isi berita 2 updated",
+        "created_at": "2024-10-29T07:08:42.315Z",
+        "updated_at": "2024-10-30T05:53:58.366Z"
+    },
+    {
+        "id": 5,
+        "category_id": 4,
+        "users_id": 5,
+        "title": "Judul berita 5",
+        "body": "Isi berita 5",
+        "created_at": "2024-10-30T05:44:17.009Z",
+        "updated_at": "2024-10-30T05:44:17.009Z"
+    }
+]
+```
+<br>
+
+### DELETE `/news/5`
+Endpoint ini digunakan untuk menghapus data news berdasarkan id news tertentu
+### Pengujian
+Pada endpoint ini, membutuhkan token untuk authorization user. Token authorization diletakkan di bagian headers dengan key Authorization. Jika user yang login mempunyai role Admin, maka user tersebut dapat mengakses endpoint ini.
+<br>
+
+- **Request Headers**
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJpYXQiOjE3MzAyODEyOTAsImV4cCI6MTczMDMxMDA5MH0.Tfmky7nWGBnSKywJY3B_WugbnljqR5vwaKaY4YPFVd4
+```
+
+- **Response**
+```json
+{
+    "message": "Data news has been deleted"
+}
+```
+<br>
+Jika user yang login mempunyai role visitor, maka endpoint akan mengembalikkan pesan error <br>
+<br>
+
+- **Request Header**
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo2LCJpYXQiOjE3MzAyODIxNDgsImV4cCI6MTczMDMxMDk0OH0.dd0V6_oHN7glqgNSDQ4YNTJVa11pEdNiKyDvXOTVldo
+```
+
+- **Response**
+```json
+{
+    "message": "Forbidden"
+}
+```
+<br>
+
+### Route Logout
+### POST `/logout`
+Endpoint ini digunakan user untuk logout 
+### Pengujian
+Pada endpoint ini, membutuhkan token untuk authorization user. Token authorization diletakkan di bagian headers dengan key Authorization. User yang mempunyai role Admin maupun role Visitor, dapat mengakses endpoint ini.
+<br>
+
+- **Request Headers role Admin**
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJpYXQiOjE3MzAyODEyOTAsImV4cCI6MTczMDMxMDA5MH0.Tfmky7nWGBnSKywJY3B_WugbnljqR5vwaKaY4YPFVd4
+```
+
+- **Response**
+```json
+{
+    "message" : "Logout Successfully"
+}
+```
+<br>
+
+Jika user yang login mempunyai role Visitor
+- **Request Header Role Visitor**
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo2LCJpYXQiOjE3MzAyODIxNDgsImV4cCI6MTczMDMxMDk0OH0.dd0V6_oHN7glqgNSDQ4YNTJVa11pEdNiKyDvXOTVldo
+```
+
+- **Response**
+```json
+{
+    "message" : "Logout Successfully"
 }
 ```
 <br>
