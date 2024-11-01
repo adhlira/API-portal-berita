@@ -1,4 +1,4 @@
-describe("Route Categories Testing", () => {
+describe("Route Categories Role Admin Testing", () => {
   let Token;
   before(() => {
     cy.request({
@@ -24,6 +24,56 @@ describe("Route Categories Testing", () => {
       },
     }).then((response) => {
       expect(response.status).eq(200);
+      expect(response.body).to.have.property("message");
+    });
+  });
+
+  it.skip("Should Successfully create new data", () => {
+    cy.request({
+      method: "POST",
+      url: "http://localhost:4000/categories",
+      headers: {
+        Authorization: `${Token}`,
+      },
+      body: {
+        name: "Fashion",
+      },
+    }).then((response) => {
+      expect(response.status).eq(200);
+      expect(response.body).to.have.property("message");
+    });
+  });
+
+  it("Should throw error for empty required field", () => {
+    cy.request({
+      method: "POST",
+      url: "http://localhost:4000/categories",
+      headers: {
+        Authorization: `${Token}`,
+      },
+      body: {
+        name: "",
+      },
+      failOnStatusCode: false,
+    }).then((response) => {
+      expect(response.status).eq(400);
+      expect(response.body).to.have.property("message");
+    });
+  });
+
+  it("Should throw error when category name is already exist", () => {
+    cy.request({
+      method: "POST",
+      url: "http://localhost:4000/categories",
+      headers: {
+        Authorization: `${Token}`,
+      },
+      body: {
+        name: "Fashion",
+      },
+      failOnStatusCode: false,
+    }).then((response) => {
+      expect(response.status).eq(400);
       expect(response.body).to.have.property("message");
     });
   });
