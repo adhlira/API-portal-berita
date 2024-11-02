@@ -1,7 +1,7 @@
 # API Portal Berita Sederhana
 
 ## Introduction
-API ini terdiri dari 2 fitur yaitu fitur category dan news. Dalam API ini terdapat 2 role user yaitu role Admin dan role visitor. Role Admin memiliki hak akses untuk login dan logout, menambah data category dan data news, melihat data category dan data news, mengupdate data category dan data news, menghapus data category dan data news. Sedangkan untuk role visitor memiliki hak akses untuk login dan logout, melihat list news, melihat detail news dan melakukan search news berdasarkan title.
+API ini terdiri dari 2 fitur utama yaitu fitur category dan news. Dalam API ini terdapat 2 role user yaitu role Admin dan role Visitor. Role Admin memiliki hak akses untuk login dan logout, menambah data category dan data news, melihat data category dan data news, mengupdate data category dan data news, menghapus data category dan data news. Sedangkan untuk role visitor memiliki hak akses untuk login dan logout, melihat list news, melihat detail news dan melakukan search news berdasarkan title.
 
 ## Technology
 Dalam pembuatan API ini menggunakan beberapa tech stack seperti :
@@ -707,3 +707,29 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo2LCJpYXQiOjE3MzAyODIxNDgsImV
 }
 ```
 <br>
+
+## Cara Memulai
+1. Clone repository
+```
+git clone https://github.com/adhlira/API-portal-berita
+```
+<br>
+
+2. Install Dependency
+```
+npm install
+```
+<br>
+
+3. Setup Environment variables dengan membuat file .env, kemudian tambahkan beberapa variable berikut
+```
+DATABASE_URL="mysql://your_username@localhost:3306/your_databse"
+
+BCRYPT_ROUND = 4
+```
+<br>
+
+4. Run server
+```
+npm start
+```
