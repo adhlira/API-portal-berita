@@ -1,4 +1,4 @@
-describe("Route Categories Role Admin Testing", () => {
+describe("Route Categories Role Admin", () => {
   let Token, category;
   before(() => {
     cy.request({
@@ -146,6 +146,117 @@ describe("Route Categories Role Admin Testing", () => {
     }).then((response) => {
       expect(response.status).eq(200);
       expect(response.body).to.have.property("message");
+    });
+  });
+
+  after(() => {
+    cy.request({
+      method: "POST",
+      url: "http://localhost:4000/logout",
+      headers: {
+        Authorization: `${Token}`,
+      },
+    });
+  });
+});
+
+describe("Route Categories Role Visitor", () => {
+  let Token;
+  before(() => {
+    cy.request({
+      method: "POST",
+      url: "http://localhost:4000/login",
+      body: {
+        email: "simba@gmail.com",
+        password: "password01",
+      },
+    }).then((response) => {
+      expect(response.status).eq(200);
+      expect(response.body).to.have.property("token");
+      Token = response.body.token;
+    });
+  });
+
+  it("Should deny access to endpoint GET for visitor role", () => {
+    cy.request({
+      method: "GET",
+      url: "http://localhost:4000/categories",
+      headers: {
+        Authorization: `${Token}`,
+      },
+      failOnStatusCode: false,
+    }).then((response) => {
+      expect(response.status).eq(403);
+      expect(response.body).to.have.property("message");
+    });
+  });
+
+  it("Should deny access to endpoint POST for visitor role", () => {
+    cy.request({
+      method: "POST",
+      url: "http://localhost:4000/categories",
+      headers: {
+        Authorization: `${Token}`,
+      },
+      failOnStatusCode: false,
+    }).then((response) => {
+      expect(response.status).eq(403);
+      expect(response.body).to.have.property("message");
+    });
+  });
+
+  it("Should deny access to endpoint PUT for visitor role", () => {
+    cy.request({
+      method: "PUT",
+      url: "http://localhost:4000/categories/2",
+      body: {
+        name: "Sports updated",
+      },
+      headers: {
+        Authorization: `${Token}`,
+      },
+      failOnStatusCode: false,
+    }).then((response) => {
+      expect(response.status).eq(403);
+      expect(response.body).to.have.property("message");
+    });
+  });
+
+  it("Should deny access to endpoint GET by id for visitor role", () => {
+    cy.request({
+      method: "GET",
+      url: "http://localhost:4000/categories/2",
+      headers: {
+        Authorization: `${Token}`,
+      },
+      failOnStatusCode: false,
+    }).then((response) => {
+      expect(response.status).eq(403);
+      expect(response.body).to.have.property("message");
+    });
+  });
+
+  it("Should deny access to endpoint DELETE for visitor role", () => {
+    cy.request({
+      method: "DELETE",
+      url: "http://localhost:4000/categories/2",
+      headers: {
+        Authorization: `${Token}`,
+      },
+      failOnStatusCode: false,
+    }).then((response) => {
+      expect(response.status).eq(403);
+      expect(response.body).to.have.property("message");
+    });
+  });
+
+  after(() => {
+    cy.request({
+      method: "POST",
+      url: "http://localhost:4000/logout",
+      headers: {
+        Authorization: `${Token}`,
+      },
     });
   });
 });
