@@ -26,7 +26,7 @@ router.post("/news", authorizePermission(Permission.ADD_NEWS), async (req, res) 
   const user = await prisma.tokens.findFirst({ where: { token: req.headers.authorization } });
   try {
     if (!category_id || !title || !body) {
-      return res.status(400).json("Data incompleted");
+      return res.status(400).json({ message: "Data incompleted" });
     } else {
       const news = await prisma.news.create({
         data: {

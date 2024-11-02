@@ -29,7 +29,7 @@ router.post("/login", async (req, res) => {
         expired_at: expiredAt,
       },
     });
-    return res.json({ token, expiredAt });
+    return res.json({ token, expiredAt, user});
   } catch (error) {
     res.status(500).json({ message: error });
   }
